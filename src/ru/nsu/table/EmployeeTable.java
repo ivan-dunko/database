@@ -1,6 +1,7 @@
-package table;
+package ru.nsu.table;
 
-import entity.Employee;
+import ru.nsu.controller.SexController;
+import ru.nsu.entity.Employee;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
@@ -8,7 +9,7 @@ import java.util.ArrayList;
 public class EmployeeTable extends AbstractTableModel {
     private ArrayList<Employee> employees;
 
-    private String colNames[] = {
+    private String[] colNames = {
             "Фамилия",
             "Имя",
             "Дата рождения",
@@ -51,10 +52,16 @@ public class EmployeeTable extends AbstractTableModel {
             case SALARY_COL: return emp.getSalary();
             case EXP_COL: return emp.getExperience();
             case NATIVE_COL: return emp.isNative();
-            case SEX_COL: return emp.getSexId();
+            case SEX_COL: return SexController.getSexNameFromId(emp.getSexId());
         }
 
         return null;
+    }
+
+    public Employee getEmployeeObj(int row){
+        if (row == -1)
+            return null;
+        return this.employees.get(row);
     }
 
     @Override

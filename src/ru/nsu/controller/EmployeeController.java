@@ -1,7 +1,7 @@
-package controller;
+package ru.nsu.controller;
 
-import entity.Employee;
-import table.EmployeeTable;
+import ru.nsu.entity.Employee;
+import ru.nsu.table.EmployeeTable;
 
 import javax.swing.*;
 import java.sql.Connection;
@@ -17,32 +17,10 @@ public class EmployeeController {
     public static void init(Connection connection, JTable employeeTable){
         EmployeeController.connection = connection;
         EmployeeController.empTable = employeeTable;
+        updateEmployeeTable();
     }
 
-    public static ArrayList<Employee> getAllEmployees(JTable eTable){
-        /*
-        if (connection == null)
-            return null;
-
-        try {
-            Statement stmt = connection.createStatement();
-            String query = "select * from employees";
-            ResultSet res = stmt.executeQuery(query);
-
-            ArrayList<Employee> emps = new ArrayList<>();
-            while (res.next()){
-                emps.add(new Employee(res));
-            }
-
-            return emps;
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-
-        return null;
-        */
-
+    public static ArrayList<Employee> getAllEmployees(){
         ArrayList<Employee> emps = new ArrayList<>();
         try {
             Statement stmt = connection.createStatement();

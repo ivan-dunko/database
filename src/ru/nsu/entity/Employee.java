@@ -1,4 +1,4 @@
-package entity;
+package ru.nsu.entity;
 
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -23,6 +23,11 @@ public class Employee {
         experience = res.getInt("experience");
         isNative = res.getBoolean("native");
         sexId = res.getInt("sex_id");
+    }
+
+    @Override
+    public String toString() {
+        return lastName + " " + firstName + " (" + birthDate.toString() + ")";
     }
 
     public int getId() {
