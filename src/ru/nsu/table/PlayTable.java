@@ -2,12 +2,13 @@ package ru.nsu.table;
 
 import ru.nsu.controller.SexController;
 import ru.nsu.entity.Employee;
+import ru.nsu.entity.Play;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 
 public class PlayTable extends AbstractTableModel {
-    private ArrayList<Employee> employees;
+    private ArrayList<Play> plays;
 
     private String[] colNames = {
             "Название",
@@ -23,13 +24,13 @@ public class PlayTable extends AbstractTableModel {
     private final static int GENRE_COL = 3;
     private final static int CATEGORY_COL = 4;
 
-    public EmployeeTable(ArrayList<Employee> employees){
-        this.employees = employees;
+    public PlayTable(ArrayList<Play> plays){
+        this.plays = plays;
     }
 
     @Override
     public int getRowCount() {
-        return employees.size();
+        return plays.size();
     }
 
     @Override
@@ -39,25 +40,23 @@ public class PlayTable extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        Employee emp = employees.get(rowIndex);
+        Play play = plays.get(rowIndex);
 
         switch (columnIndex){
-            case LAST_NAME_COL: return emp.getLastName();
-            case FIRST_NAME_COL: return emp.getFirstName();
-            case BIRTH_DATE_COL: return emp.getBirthDate().toString();
-            case SALARY_COL: return emp.getSalary();
-            case EXP_COL: return emp.getExperience();
-            case NATIVE_COL: return emp.isNative();
-            case SEX_COL: return SexController.getSexNameFromId(emp.getSexId());
+            case NAME_COL: return play.getName();
+            case AUTHOR_COL: return play.getAuthor();
+            case YEAR_COL: return play.getYear();
+            case GENRE_COL: return play.getGenreId();
+            case CATEGORY_COL: return play.getAgeCatId();
         }
 
         return null;
     }
 
-    public Employee getEmployeeObj(int row){
+    public Play getEmployeeObj(int row){
         if (row == -1)
             return null;
-        return this.employees.get(row);
+        return this.plays.get(row);
     }
 
     @Override
