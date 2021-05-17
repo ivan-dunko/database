@@ -2,13 +2,13 @@ package ru.nsu.controller;
 
 import ru.nsu.entity.Actor;
 import ru.nsu.entity.Employee;
+import ru.nsu.entity.Role;
+import ru.nsu.form.CandidatesDialog;
 import ru.nsu.table.ActorTable;
 import ru.nsu.table.EmployeeTable;
 
 import javax.swing.*;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
@@ -22,30 +22,7 @@ public class ActorController {
         updateActorTable();
     }
 
-    public static ArrayList<Actor> getAllActors(JTable actTable){
-        /*
-        if (connection == null)
-            return null;
-
-        try {
-            Statement stmt = connection.createStatement();
-            String query = "select * from employees";
-            ResultSet res = stmt.executeQuery(query);
-
-            ArrayList<Employee> emps = new ArrayList<>();
-            while (res.next()){
-                emps.add(new Employee(res));
-            }
-
-            return emps;
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-
-        return null;
-        */
-
+    public static ArrayList<Actor> getAllActors(){
         ArrayList<Actor> acts = new ArrayList<>();
         try {
             Statement stmt = connection.createStatement();
@@ -90,6 +67,49 @@ public class ActorController {
             protected void done() {
                 try {
                     actTable.setModel(new ActorTable(get()));
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
+            }
+        }.execute();
+    }
+
+    public static void showRoleCandidates(Role role){
+        final Role finalRole = role;
+        new SwingWorker<ArrayList<Actor>, Void>() {
+            Role role = finalRole;
+            @Override
+            protected ArrayList<Actor> doInBackground() throws Exception {
+                StringBuilder query = new StringBuilder("select * from actors join employees on " +
+                        "actors.employee_id = employees.id where ");
+                Date curr = new Date(new java.util.Date().getTime());
+                query.append("sex_id = ? AND ");
+                query.append("(YEAR(?) - YEAR(birth_date)) BETWEEN ? AND ?;");
+                System.out.println(query);
+                PreparedStatement stmt = connection.prepareStatement(query.toString());
+                stmt.setInt(1, role.getSexId());
+                stmt.setDate(2, curr);
+                stmt.setInt(3, role.getMinAge());
+                stmt.setInt(4, role.getMaxAge());
+
+                System.out.println(stmt.toString());
+                ResultSet res = stmt.executeQuery();
+                ArrayList<Actor> actors = new ArrayList<>();
+                while (res.next())
+                    actors.add(new Actor(res));
+
+                return actors;
+            }
+
+            @Override
+            protected void done() {
+                try {
+                    //actTable.setModel(new ActorTable(get()));
+                    JDialog candDialog = new CandidatesDialog(get());
+                    candDialog.pack();
+                    candDialog.setVisible(true);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } catch (ExecutionException e) {

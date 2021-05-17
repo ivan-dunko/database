@@ -1,11 +1,13 @@
 package ru.nsu.form;
 
-import jdk.nashorn.internal.runtime.regexp.joni.ScanEnvironment;
+import ru.nsu.IdName;
 import ru.nsu.controller.*;
 import ru.nsu.entity.Author;
 import ru.nsu.entity.Employee;
+import ru.nsu.entity.Role;
 import ru.nsu.table.AuthorTable;
 import ru.nsu.table.EmployeeTable;
+import ru.nsu.table.RoleTable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,6 +15,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.Timestamp;
+import java.util.ArrayList;
 
 public class MainForm {
     private JTabbedPane tabs;
@@ -54,18 +58,35 @@ public class MainForm {
     private JSpinner spinner4;
     private JButton searchButton;
     private JButton showAllButton;
-    private JTable table1;
+    private JTable perfTable;
     private JTextField textField3;
     private JTextField textField4;
-    private JCheckBox мюзиклCheckBox;
-    private JCheckBox комедияCheckBox;
-    private JCheckBox драмаCheckBox;
-    private JCheckBox мелодрамаCheckBox;
-    private JCheckBox трагедияCheckBox;
+    private JCheckBox musicalBox;
+    private JCheckBox comedyBox;
+    private JCheckBox dramaBox;
+    private JCheckBox melodramaBox;
+    private JCheckBox tragedyBox;
     private JScrollPane genrePane;
     private JPanel gPane;
-    private JButton поискButton;
-    private JButton показатьВсеButton;
+    private JButton searchPerfButton;
+    private JButton showPerfButton;
+    private JCheckBox vaudevilleBox;
+    private JList<IdName> list1;
+    private JButton addAuthorsButton;
+    private JPanel agesPanel;
+    private JCheckBox cent16CheckBox;
+    private JCheckBox cent17CheckBox;
+    private JCheckBox cent18CheckBox;
+    private JCheckBox cent19CheckBox;
+    private JCheckBox cent20CheckBox;
+    private JPanel datePanel;
+    private JCheckBox firstCheckBox;
+    private JTable rolesTable;
+    private JButton choosePlayButton;
+    private JButton candidateButton;
+    private JLabel playLabel;
+    private JTable table2;
+    private JButton addPerfButton;
     private volatile Connection connection = null;
 
     private void createUIComponents() {
@@ -80,6 +101,13 @@ public class MainForm {
         spinner1.setValue(0);
         spinner2.setValue(100);
 
+        list1.setModel(new DefaultListModel<>());
+        //agesPanel.setLayout(new BasicSplitPaneUI.BasicVerticalLayoutManager());
+        agesPanel.setLayout(new GridLayout(5, 1));
+        //datePanel.setLayout(new GridBagLayout());
+        //list1.setPrototypeCellValue(new IdName(-1, "   asdasdas"));
+        //list1.setListData(new IdName[]{new IdName(-1, "             ")});
+
         //genrePane = new JScrollPane(gPane);
 
         employeesTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -93,6 +121,10 @@ public class MainForm {
             DirectorController.init(connection, dirTable);
             StaffController.init(connection, staffTable);
             AuthorController.init(connection, authorTable);
+            //PlayController.init(connection, rolesTable);
+            PlayController.init(connection);
+            RoleController.init(connection, rolesTable);
+            PerformanceController.init(connection, perfTable);
         }
         catch (Exception e){
             e.printStackTrace();
@@ -190,6 +222,73 @@ public class MainForm {
                         yearMin,
                         yearMax
                 ));
+            }
+        });
+        showPerfButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                PerformanceController.updatePerformanceTable();
+            }
+        });
+        searchPerfButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                PerformanceController.SearchContext context = null;
+                try {
+                    Timestamp start = Timestamp.valueOf(textField3.getText());
+                    Timestamp end = Timestamp.valueOf(textField4.getText());
+                    boolean vaudeville = vaudevilleBox.isSelected();
+                    boolean comedy = comedyBox.isSelected();
+                    boolean drama = dramaBox.isSelected();
+                    boolean melodrama = melodramaBox.isSelected();
+                    boolean musical = musicalBox.isSelected();
+                    boolean tragedy = tragedyBox.isSelected();
+                    boolean first = firstCheckBox.isSelected();
+                    boolean cent16 = cent16CheckBox.isSelected();
+                    boolean cent17 = cent16CheckBox.isSelected();
+                    boolean cent18 = cent16CheckBox.isSelected();
+                    boolean cent19 = cent16CheckBox.isSelected();
+                    ArrayList<IdName> authIds = new ArrayList<>(list1.getSelectedValuesList());
+
+
+                }
+                catch (IllegalArgumentException exc){
+
+                }
+            }
+        });
+        addAuthorsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JDialog authDiag = new SelectAuthorsDialog(list1);
+                authDiag.pack();
+                authDiag.setVisible(true);
+            }
+        });
+        choosePlayButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JDialog playDiag = new PlayChoiceDialog(playLabel);
+                playDiag.pack();
+                playDiag.setVisible(true);
+            }
+        });
+        candidateButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int row = rolesTable.getSelectedRow();
+                if (row == -1)
+                    return;
+                Role role = ((RoleTable)rolesTable.getModel()).getRoleObject(row);
+                ActorController.showRoleCandidates(role);
+            }
+        });
+        addPerfButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JDialog chosePlay = new PlayChoiceDialog2();
+                chosePlay.pack();
+                chosePlay.setVisible(true);
             }
         });
     }

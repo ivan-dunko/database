@@ -2,6 +2,7 @@ package ru.nsu.controller;
 
 import ru.nsu.entity.Author;
 import ru.nsu.entity.Director;
+import ru.nsu.entity.Employee;
 import ru.nsu.table.AuthorTable;
 import ru.nsu.table.DirectorTable;
 
@@ -42,6 +43,24 @@ public class AuthorController {
         return dirs;
     }
     */
+
+    public static ArrayList<Author> getAllAuthors(){
+        ArrayList<Author> authors = new ArrayList<>();
+        try {
+            Statement stmt = connection.createStatement();
+            String query = "select * from authors";
+            ResultSet res = stmt.executeQuery(query);
+
+            while (res.next()) {
+                authors.add(new Author(res));
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return authors;
+    }
 
     public static void updateAuthorTable(){
         new SwingWorker<ArrayList<Author>, Void>() {

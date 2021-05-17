@@ -54,7 +54,7 @@
                             <properties/>
                             <border type="none"/>
                             <children>
-                              <component id="b60f7" class="javax.swing.JTable" binding="table1" default-binding="true">
+                              <component id="b60f7" class="javax.swing.JTable" binding="perfTable">
                                 <constraints/>
                                 <properties/>
                               </component>
@@ -69,6 +69,10 @@
                             <children>
                               <grid id="4e9ad" layout-manager="FormLayout">
                                 <rowspec value="center:d:noGrow"/>
+                                <rowspec value="top:4dlu:noGrow"/>
+                                <rowspec value="center:max(d;4px):noGrow"/>
+                                <rowspec value="top:4dlu:noGrow"/>
+                                <rowspec value="center:max(d;4px):noGrow"/>
                                 <rowspec value="top:4dlu:noGrow"/>
                                 <rowspec value="center:max(d;4px):noGrow"/>
                                 <rowspec value="top:4dlu:noGrow"/>
@@ -89,7 +93,7 @@
                                       <text value="Дата"/>
                                     </properties>
                                   </component>
-                                  <grid id="252b1" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
+                                  <grid id="252b1" binding="datePanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
                                     <constraints>
                                       <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                                       <forms/>
@@ -103,7 +107,7 @@
                                           <text value="С"/>
                                         </properties>
                                       </component>
-                                      <component id="2b3ff" class="javax.swing.JTextField" binding="textField3" default-binding="true">
+                                      <component id="7876" class="javax.swing.JTextField" binding="textField4" default-binding="true">
                                         <constraints/>
                                         <properties>
                                           <columns value="12"/>
@@ -115,10 +119,16 @@
                                           <text value="По"/>
                                         </properties>
                                       </component>
-                                      <component id="7876" class="javax.swing.JTextField" binding="textField4" default-binding="true">
+                                      <component id="2b3ff" class="javax.swing.JTextField" binding="textField3" default-binding="true">
                                         <constraints/>
                                         <properties>
                                           <columns value="12"/>
+                                        </properties>
+                                      </component>
+                                      <component id="4f27b" class="javax.swing.JCheckBox" binding="firstCheckBox">
+                                        <constraints/>
+                                        <properties>
+                                          <text value="Поставленные впервые"/>
                                         </properties>
                                       </component>
                                     </children>
@@ -150,37 +160,37 @@
                                             <properties/>
                                             <border type="none"/>
                                             <children>
-                                              <component id="a9511" class="javax.swing.JCheckBox">
+                                              <component id="a9511" class="javax.swing.JCheckBox" binding="vaudevilleBox">
                                                 <constraints/>
                                                 <properties>
                                                   <text value="Водевиль"/>
                                                 </properties>
                                               </component>
-                                              <component id="72beb" class="javax.swing.JCheckBox" binding="комедияCheckBox" default-binding="true">
+                                              <component id="72beb" class="javax.swing.JCheckBox" binding="comedyBox">
                                                 <constraints/>
                                                 <properties>
                                                   <text value="Комедия"/>
                                                 </properties>
                                               </component>
-                                              <component id="eefd3" class="javax.swing.JCheckBox" binding="драмаCheckBox" default-binding="true">
+                                              <component id="eefd3" class="javax.swing.JCheckBox" binding="dramaBox">
                                                 <constraints/>
                                                 <properties>
                                                   <text value="Драма"/>
                                                 </properties>
                                               </component>
-                                              <component id="cd8e7" class="javax.swing.JCheckBox" binding="мелодрамаCheckBox" default-binding="true">
+                                              <component id="cd8e7" class="javax.swing.JCheckBox" binding="melodramaBox">
                                                 <constraints/>
                                                 <properties>
                                                   <text value="Мелодрама"/>
                                                 </properties>
                                               </component>
-                                              <component id="e90df" class="javax.swing.JCheckBox" binding="трагедияCheckBox" default-binding="true">
+                                              <component id="e90df" class="javax.swing.JCheckBox" binding="tragedyBox">
                                                 <constraints/>
                                                 <properties>
                                                   <text value="Трагедия"/>
                                                 </properties>
                                               </component>
-                                              <component id="7427" class="javax.swing.JCheckBox" binding="мюзиклCheckBox" default-binding="true">
+                                              <component id="7427" class="javax.swing.JCheckBox" binding="musicalBox">
                                                 <constraints/>
                                                 <properties>
                                                   <text value="Мюзикл"/>
@@ -192,7 +202,16 @@
                                       </scrollpane>
                                     </children>
                                   </grid>
-                                  <grid id="59a82" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
+                                  <component id="d240d" class="javax.swing.JLabel">
+                                    <constraints>
+                                      <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                      <forms/>
+                                    </constraints>
+                                    <properties>
+                                      <text value="Авторы"/>
+                                    </properties>
+                                  </component>
+                                  <grid id="964b9" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
                                     <constraints>
                                       <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                                       <forms/>
@@ -200,13 +219,122 @@
                                     <properties/>
                                     <border type="none"/>
                                     <children>
-                                      <component id="2c86d" class="javax.swing.JButton" binding="поискButton" default-binding="true">
+                                      <scrollpane id="5c25c">
+                                        <constraints/>
+                                        <properties/>
+                                        <border type="none"/>
+                                        <children>
+                                          <component id="3635e" class="javax.swing.JList" binding="list1" default-binding="true">
+                                            <constraints/>
+                                            <properties/>
+                                          </component>
+                                        </children>
+                                      </scrollpane>
+                                      <component id="f114e" class="javax.swing.JButton" binding="addAuthorsButton">
+                                        <constraints/>
+                                        <properties>
+                                          <text value="Выбрать авторов"/>
+                                        </properties>
+                                      </component>
+                                    </children>
+                                  </grid>
+                                  <component id="23a28" class="javax.swing.JLabel">
+                                    <constraints>
+                                      <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                      <forms/>
+                                    </constraints>
+                                    <properties>
+                                      <text value="Века"/>
+                                    </properties>
+                                  </component>
+                                  <grid id="3be6" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                                    <margin top="0" left="0" bottom="0" right="0"/>
+                                    <constraints>
+                                      <grid row="6" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                                      <forms/>
+                                    </constraints>
+                                    <properties/>
+                                    <border type="none"/>
+                                    <children>
+                                      <scrollpane id="6b0ce">
+                                        <constraints>
+                                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                                        </constraints>
+                                        <properties/>
+                                        <border type="none"/>
+                                        <children>
+                                          <grid id="5ae24" binding="agesPanel" layout-manager="GridLayoutManager" row-count="1" column-count="5" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                                            <margin top="0" left="0" bottom="0" right="0"/>
+                                            <constraints/>
+                                            <properties/>
+                                            <border type="none"/>
+                                            <children>
+                                              <component id="2cab0" class="javax.swing.JCheckBox" binding="cent16CheckBox">
+                                                <constraints>
+                                                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                                </constraints>
+                                                <properties>
+                                                  <text value="16й"/>
+                                                </properties>
+                                              </component>
+                                              <component id="36760" class="javax.swing.JCheckBox" binding="cent17CheckBox">
+                                                <constraints>
+                                                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                                </constraints>
+                                                <properties>
+                                                  <text value="17й"/>
+                                                </properties>
+                                              </component>
+                                              <component id="be18d" class="javax.swing.JCheckBox" binding="cent18CheckBox">
+                                                <constraints>
+                                                  <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                                </constraints>
+                                                <properties>
+                                                  <text value="18й"/>
+                                                </properties>
+                                              </component>
+                                              <component id="975df" class="javax.swing.JCheckBox" binding="cent19CheckBox">
+                                                <constraints>
+                                                  <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                                </constraints>
+                                                <properties>
+                                                  <text value="19й"/>
+                                                </properties>
+                                              </component>
+                                              <component id="75f8" class="javax.swing.JCheckBox" binding="cent20CheckBox">
+                                                <constraints>
+                                                  <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                                                </constraints>
+                                                <properties>
+                                                  <text value="20й"/>
+                                                </properties>
+                                              </component>
+                                            </children>
+                                          </grid>
+                                        </children>
+                                      </scrollpane>
+                                      <hspacer id="62adc">
+                                        <constraints>
+                                          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                                        </constraints>
+                                      </hspacer>
+                                    </children>
+                                  </grid>
+                                  <grid id="9fe66" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
+                                    <constraints>
+                                      <grid row="8" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                                      <forms/>
+                                    </constraints>
+                                    <properties/>
+                                    <border type="none"/>
+                                    <children>
+                                      <component id="7eb31" class="javax.swing.JButton" binding="searchPerfButton">
                                         <constraints/>
                                         <properties>
                                           <text value="Поиск"/>
                                         </properties>
                                       </component>
-                                      <component id="c0d22" class="javax.swing.JButton" binding="показатьВсеButton" default-binding="true">
+                                      <component id="2c268" class="javax.swing.JButton" binding="showPerfButton">
                                         <constraints/>
                                         <properties>
                                           <text value="Показать все"/>
@@ -222,14 +350,28 @@
                       </splitpane>
                     </children>
                   </scrollpane>
-                  <grid id="6256e" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                  <grid id="6256e" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                     <margin top="0" left="0" bottom="0" right="0"/>
                     <constraints>
                       <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties/>
                     <border type="none"/>
-                    <children/>
+                    <children>
+                      <component id="37762" class="javax.swing.JButton" binding="addPerfButton">
+                        <constraints>
+                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Add"/>
+                        </properties>
+                      </component>
+                      <hspacer id="38f09">
+                        <constraints>
+                          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                      </hspacer>
+                    </children>
                   </grid>
                 </children>
               </grid>
@@ -810,14 +952,101 @@
                   </grid>
                 </children>
               </grid>
-              <grid id="e1160" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+              <grid id="e1160" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                 <margin top="0" left="0" bottom="0" right="0"/>
                 <constraints>
                   <tabbedpane title="Plays"/>
                 </constraints>
                 <properties/>
                 <border type="none"/>
-                <children/>
+                <children>
+                  <scrollpane id="f6739">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <component id="ee285" class="javax.swing.JTable" binding="table2" default-binding="true">
+                        <constraints/>
+                        <properties/>
+                      </component>
+                    </children>
+                  </scrollpane>
+                  <grid id="7a9e4" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                    <margin top="0" left="0" bottom="0" right="0"/>
+                    <constraints>
+                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none"/>
+                    <children/>
+                  </grid>
+                </children>
+              </grid>
+              <grid id="25bcd" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                <margin top="0" left="0" bottom="0" right="0"/>
+                <constraints>
+                  <tabbedpane title="Roles"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <scrollpane id="5d72a">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <grid id="2ac08" layout-manager="GridLayoutManager" row-count="4" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                        <margin top="0" left="0" bottom="0" right="0"/>
+                        <constraints/>
+                        <properties/>
+                        <border type="none"/>
+                        <children>
+                          <scrollpane id="a3e8">
+                            <constraints>
+                              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties/>
+                            <border type="none"/>
+                            <children>
+                              <component id="7b09d" class="javax.swing.JTable" binding="rolesTable">
+                                <constraints/>
+                                <properties/>
+                              </component>
+                            </children>
+                          </scrollpane>
+                          <component id="179c9" class="javax.swing.JButton" binding="choosePlayButton">
+                            <constraints>
+                              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="Выберите пьесу"/>
+                            </properties>
+                          </component>
+                          <component id="8d2d9" class="javax.swing.JLabel" binding="playLabel">
+                            <constraints>
+                              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="-"/>
+                            </properties>
+                          </component>
+                          <component id="80253" class="javax.swing.JButton" binding="candidateButton">
+                            <constraints>
+                              <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="Посмотреть кандидатов на роль"/>
+                            </properties>
+                          </component>
+                        </children>
+                      </grid>
+                    </children>
+                  </scrollpane>
+                </children>
               </grid>
             </children>
           </tabbedpane>

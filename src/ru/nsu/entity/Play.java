@@ -15,7 +15,7 @@ public class Play {
         id = res.getInt("id");
         name = res.getString("name");
         year = res.getInt("year");
-        author = res.getString("last_name") + " " + res.getString("first_name");
+        author = res.getString("authors.last_name") + " " + res.getString("authors.first_name");
         genreId = res.getInt("genre_id");
         ageCatId = res.getInt("category_id");
     }
