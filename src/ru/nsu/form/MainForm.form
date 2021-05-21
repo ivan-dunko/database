@@ -34,7 +34,9 @@
                 <children>
                   <scrollpane id="77bbd">
                     <constraints>
-                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                        <preferred-size width="699" height="428"/>
+                      </grid>
                     </constraints>
                     <properties/>
                     <border type="none"/>
@@ -353,7 +355,9 @@
                   <grid id="6256e" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                     <margin top="0" left="0" bottom="0" right="0"/>
                     <constraints>
-                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                        <preferred-size width="699" height="34"/>
+                      </grid>
                     </constraints>
                     <properties/>
                     <border type="none"/>
@@ -814,12 +818,12 @@
                       </component>
                     </children>
                   </scrollpane>
-                  <component id="cff2a" class="javax.swing.JButton" binding="button1" default-binding="true">
+                  <component id="cff2a" class="javax.swing.JButton" binding="addMusButton">
                     <constraints>
                       <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
-                      <text value="Button"/>
+                      <text value="Add"/>
                     </properties>
                   </component>
                   <component id="cb86e" class="javax.swing.JButton" binding="button2" default-binding="true">
@@ -830,12 +834,12 @@
                       <text value="Button"/>
                     </properties>
                   </component>
-                  <component id="c842f" class="javax.swing.JButton" binding="button3" default-binding="true">
+                  <component id="c842f" class="javax.swing.JButton" binding="editMusButton">
                     <constraints>
                       <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
-                      <text value="Button"/>
+                      <text value="Edit"/>
                     </properties>
                   </component>
                 </children>
@@ -1050,14 +1054,61 @@
               </grid>
             </children>
           </tabbedpane>
-          <grid id="e36a6" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+          <grid id="e36a6" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
-              <tabbedpane title="Queries"/>
+              <tabbedpane title="Tickets"/>
             </constraints>
             <properties/>
             <border type="none"/>
-            <children/>
+            <children>
+              <scrollpane id="f153f">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <grid id="3fece" layout-manager="GridLayoutManager" row-count="3" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                    <margin top="0" left="0" bottom="0" right="0"/>
+                    <constraints/>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <component id="4052" class="javax.swing.JButton" binding="sellTicketButton">
+                        <constraints>
+                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Продать билет"/>
+                        </properties>
+                      </component>
+                      <component id="38eb0" class="javax.swing.JButton" binding="proceedsButton">
+                        <constraints>
+                          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Посчитать доход"/>
+                        </properties>
+                      </component>
+                      <component id="699a2" class="javax.swing.JButton" binding="freePlacesButton">
+                        <constraints>
+                          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Свободные места"/>
+                        </properties>
+                      </component>
+                    </children>
+                  </grid>
+                </children>
+              </scrollpane>
+              <vspacer id="3010e">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                </constraints>
+              </vspacer>
+            </children>
           </grid>
         </children>
       </tabbedpane>

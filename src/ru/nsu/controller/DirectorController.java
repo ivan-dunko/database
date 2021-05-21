@@ -20,12 +20,12 @@ public class DirectorController {
         updateDirectorTable();
     }
 
-    public static ArrayList<Director> getAllDirectors(JTable dirTable){
+    public static ArrayList<Director> getAllDirectors(){
         ArrayList<Director> dirs = new ArrayList<>();
         try {
             Statement stmt = connection.createStatement();
-            String query = "select * from actors join employees on " +
-                    "actors.employee_id = employees.id";
+            String query = "select * from directors join employees on " +
+                    "directors.employee_id = employees.id";
             ResultSet res = stmt.executeQuery(query);
 
             while (res.next()) {

@@ -1,6 +1,7 @@
 package ru.nsu.controller;
 
 import ru.nsu.entity.Director;
+import ru.nsu.entity.Musician;
 import ru.nsu.entity.Staff;
 import ru.nsu.table.MusicianTable;
 
@@ -21,23 +22,23 @@ public class MusicianController {
         updateMusicianTable();
     }
 
-    public static ArrayList<Director> getAllDirectors(JTable dirTable){
-        ArrayList<Director> dirs = new ArrayList<>();
+    public static ArrayList<Musician> getAllMusicians(){
+        ArrayList<Musician> musicians = new ArrayList<>();
         try {
             Statement stmt = connection.createStatement();
-            String query = "select * from actors join employees on " +
-                    "actors.employee_id = employees.id";
+            String query = "select * from musicians join employees on " +
+                    "musicians.employee_id = employees.id";
             ResultSet res = stmt.executeQuery(query);
 
             while (res.next()) {
-                dirs.add(new Director(res));
+                musicians.add(new Musician(res));
             }
         }
         catch (Exception e){
             e.printStackTrace();
         }
 
-        return dirs;
+        return musicians;
     }
 
 

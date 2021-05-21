@@ -10,15 +10,15 @@ public class PerformanceTable extends AbstractTableModel {
     private ArrayList<Performance> perfs;
 
     private String[] colNames = {
-            "Художник-постановщик",
-            "Режиссёр-постановщик",
+            "Режиссёр",
+            "Музыкант",
             "Пьеса",
-            "Начадо",
+            "Начало",
             "Конец"
     };
 
-    private final static int STAGE_DIR_COL = 0;
-    private final static int PROD_DIR_COL = 1;
+    private final static int DIR_COL = 0;
+    private final static int MUS_COL = 1;
     private final static int PLAY_COL = 2;
     private final static int START_TIME_COL = 3;
     private final static int END_TIME_COL = 4;
@@ -42,8 +42,8 @@ public class PerformanceTable extends AbstractTableModel {
         Performance perf = perfs.get(rowIndex);
 
         switch (columnIndex){
-            case STAGE_DIR_COL: return perf.getStageDirector();
-            case PROD_DIR_COL: return perf.getProdDirector();
+            case DIR_COL: return perf.getDirector();
+            case MUS_COL: return perf.getMusician();
             case PLAY_COL: return perf.getPlay();
             case START_TIME_COL: return perf.getStartTime().toString();
             case END_TIME_COL: return  perf.getEndTime().toString();

@@ -2,12 +2,8 @@ package ru.nsu.form;
 
 import jdk.nashorn.internal.scripts.JO;
 import ru.nsu.IdName;
-import ru.nsu.controller.ActorController;
-import ru.nsu.controller.PerformanceController;
-import ru.nsu.controller.RoleController;
-import ru.nsu.entity.Actor;
-import ru.nsu.entity.Performance;
-import ru.nsu.entity.Role;
+import ru.nsu.controller.*;
+import ru.nsu.entity.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,9 +20,8 @@ public class AddPerformanceDialog extends JDialog {
     private JButton buttonCancel;
     private JFormattedTextField formattedTextField1;
     private JFormattedTextField formattedTextField2;
-    private JComboBox comboBox1;
-    private JComboBox comboBox2;
-    private JComboBox comboBox3;
+    private JComboBox<Director> dirsComboBox;
+    private JComboBox<Musician> musComboBox;
     private JPanel actorsPanel;
     private ArrayList<JComboBox<Actor>> actorBoxes, stuntBoxes;
     private ArrayList<Label> roleLabels;
@@ -65,6 +60,14 @@ public class AddPerformanceDialog extends JDialog {
                 onCancel();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+
+        ArrayList<Director> dirs = DirectorController.getAllDirectors();
+        for (Director dir : dirs)
+            dirsComboBox.addItem(dir);
+
+        ArrayList<Musician> musicians = MusicianController.getAllMusicians();
+        for (Musician mus : musicians)
+            musComboBox.addItem(mus);
 
         //actorsPanel.setLayout(new GridLayout());
         // TODO
@@ -170,7 +173,9 @@ public class AddPerformanceDialog extends JDialog {
         }
 
         // 4. Add
-        PerformanceController.addPerformance(playId, start, end, 1, 1, roles, actors, stunts);
+        int dirId = ((Director)dirsComboBox.getSelectedItem()).getId();
+        int musId = ((Musician)musComboBox.getSelectedItem()).getId();
+        PerformanceController.addPerformance(playId, start, end, dirId, musId, roles, actors, stunts);
 
         dispose();
     }

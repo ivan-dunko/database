@@ -34,9 +34,9 @@ public class MainForm {
     private JButton dirEditButton;
     private JButton dirDeleteButton;
     private JTable musTable;
-    private JButton button1;
+    private JButton addMusButton;
     private JButton button2;
-    private JButton button3;
+    private JButton editMusButton;
     private JTable staffTable;
     private JButton button4;
     private JButton button5;
@@ -87,6 +87,9 @@ public class MainForm {
     private JLabel playLabel;
     private JTable table2;
     private JButton addPerfButton;
+    private JButton sellTicketButton;
+    private JButton proceedsButton;
+    private JButton freePlacesButton;
     private volatile Connection connection = null;
 
     private void createUIComponents() {
@@ -233,10 +236,9 @@ public class MainForm {
         searchPerfButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                PerformanceController.SearchContext context = null;
                 try {
-                    Timestamp start = Timestamp.valueOf(textField3.getText());
-                    Timestamp end = Timestamp.valueOf(textField4.getText());
+                    Timestamp start = Timestamp.valueOf(textField4.getText() + ":00");
+                    Timestamp end = Timestamp.valueOf(textField3.getText() + ":00");
                     boolean vaudeville = vaudevilleBox.isSelected();
                     boolean comedy = comedyBox.isSelected();
                     boolean drama = dramaBox.isSelected();
@@ -245,15 +247,34 @@ public class MainForm {
                     boolean tragedy = tragedyBox.isSelected();
                     boolean first = firstCheckBox.isSelected();
                     boolean cent16 = cent16CheckBox.isSelected();
-                    boolean cent17 = cent16CheckBox.isSelected();
-                    boolean cent18 = cent16CheckBox.isSelected();
-                    boolean cent19 = cent16CheckBox.isSelected();
+                    boolean cent17 = cent17CheckBox.isSelected();
+                    boolean cent18 = cent18CheckBox.isSelected();
+                    boolean cent19 = cent19CheckBox.isSelected();
+                    boolean cent20 = cent20CheckBox.isSelected();
                     ArrayList<IdName> authIds = new ArrayList<>(list1.getSelectedValuesList());
 
+                    PerformanceController.SearchContext searchContext = new PerformanceController.SearchContext(
+                            start,
+                            end,
+                            vaudeville,
+                            comedy,
+                            drama,
+                            melodrama,
+                            musical,
+                            tragedy,
+                            first,
+                            cent16,
+                            cent17,
+                            cent18,
+                            cent19,
+                            cent20,
+                            authIds
+                    );
 
+                    PerformanceController.searchPerformances(searchContext);
                 }
                 catch (IllegalArgumentException exc){
-
+                    JOptionPane.showMessageDialog(null, "Неверные данные");
                 }
             }
         });

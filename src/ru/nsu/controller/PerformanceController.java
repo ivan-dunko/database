@@ -16,6 +16,26 @@ import java.util.concurrent.ExecutionException;
 public class PerformanceController {
     private static volatile Connection connection = null;
     private static volatile JTable perfTable = null;
+    private final static String perfQuery = "select * from performances\n" +
+            "join (\n" +
+            "\tselect id as dir_id, dir_l_name, dir_f_name from directors\n" +
+            "\tjoin (\n" +
+            "\t\tselect id as emp_id, last_name as dir_l_name, first_name as dir_f_name\n" +
+            "\t\tfrom employees\n" +
+            "\t) AS SUB_DIR on employee_id = emp_id) as DIRS on dir_id = director_id\n" +
+            "join (\n" +
+            "\tselect id as mus_id, mus_l_name, mus_f_name from musicians\n" +
+            "\tjoin(\n" +
+            "\t\tselect id as emp_id, last_name as mus_l_name, first_name as mus_f_name\n" +
+            "\t\tfrom employees\n" +
+            "\t) AS SUB_MUS on employee_id = emp_id) as MUS on mus_id = musician_id\n" +
+            "join (\n" +
+            "\tselect id as pl_id, name as play_name from plays\n" +
+            ") AS PLAYS on play_id = pl_id";
+
+    private final static String firstPerfQuery = "select play_id, MIN(start_time) from performances\n" +
+            "where start_time >= ? and end_time <= ?\n" +
+            "group by play_id";
 
     public static void init(Connection connection, JTable employeeTable){
         PerformanceController.connection = connection;
@@ -27,8 +47,7 @@ public class PerformanceController {
         ArrayList<Performance> perfs = new ArrayList<>();
         try {
             Statement stmt = connection.createStatement();
-            String query = "select * from performances";
-            ResultSet res = stmt.executeQuery(query);
+            ResultSet res = stmt.executeQuery(perfQuery);
 
             while (res.next()) {
                 perfs.add(new Performance(res));
@@ -46,19 +65,27 @@ public class PerformanceController {
         new SwingWorker<ArrayList<Performance>, Void>() {
             @Override
             protected ArrayList<Performance> doInBackground() throws Exception {
-                ArrayList<Performance> perfs = new ArrayList<>();
+                ArrayList<Performance> perfs;
                 try {
+                    /*
                     Statement stmt = connection.createStatement();
-                    String query = "select * from performances";
+                    String query = "select * from performances" +
+                            "join plays on play_id = plays.id " +
+                            "join directors on ";
                     ResultSet res = stmt.executeQuery(query);
 
                     while (res.next()) {
                         perfs.add(new Performance(res));
                     }
+
+                     */
+                    perfs = PerformanceController.getAllPerformances();
                 }
                 catch (Exception e){
                     e.printStackTrace();
+                    return new ArrayList<>();
                 }
+
                 return perfs;
             }
 
@@ -79,8 +106,8 @@ public class PerformanceController {
             int playId,
             Timestamp start,
             Timestamp end,
-            int stageDirId,
-            int prodDirId,
+            int dirId,
+            int musId,
             ArrayList<Role> roles,
             ArrayList<Actor> actors,
             ArrayList<Actor> stunts){
@@ -88,33 +115,33 @@ public class PerformanceController {
         try {
             // 1. Add to `Performances` table
             StringBuilder query = new StringBuilder("insert into performances" +
-                    " (stage_director_id, prod_director_id, play_id, start_time, end_time) " +
+                    " (director_id, musician_id, play_id, start_time, end_time) " +
                     "values (?, ?, ?, ?, ?);\n");
             // 2. Add roles to `Performance-Role` table
-
-            for (int i = 0; i < roles.size(); ++i)
-                query.append("insert into performance_role " +
-                        "(performance_id, role_id, actor_id, stunt_id) " +
-                        "values (LAST_INSERT_ID(), ?, ?, ?);\n");
-
-
-            System.out.println(query);
             PreparedStatement stmt = connection.prepareStatement(query.toString());
-            stmt.setInt(1, stageDirId);
-            stmt.setInt(2, prodDirId);
+            stmt.setInt(1, dirId);
+            stmt.setInt(2, musId);
             stmt.setInt(3, playId);
             stmt.setTimestamp(4, start);
             stmt.setTimestamp(5, end);
-
-            for (int i = 0; i < roles.size(); ++i){
-                stmt.setInt(6 + i * 3, roles.get(i).getId());
-                stmt.setInt(6 + i * 3 + 1, actors.get(i).getId());
-                stmt.setInt(6 + i * 3 + 2, stunts.get(i).getId());
-            }
-
-
-
             stmt.executeUpdate();
+
+            for (int i = 0; i < roles.size(); ++i) {
+                query = new StringBuilder("insert into performance_role " +
+                        "(performance_id, role_id, actor_id, stunt_id) " +
+                        "values (LAST_INSERT_ID(), ?, ?, ?);\n");
+
+                System.out.println(query);
+                stmt = connection.prepareStatement(query.toString());
+
+
+                stmt.setInt(1, roles.get(i).getId());
+                stmt.setInt(2, actors.get(i).getId());
+                stmt.setInt(3, stunts.get(i).getId());
+
+
+                stmt.executeUpdate();
+            }
         }
         catch (SQLException e){
             e.printStackTrace();
@@ -123,15 +150,14 @@ public class PerformanceController {
 
     public static void searchPerformances(PerformanceController.SearchContext context){
         // CONSTRUCTING QUERY
-        StringBuilder query = new StringBuilder("select * from performances where " +
-                "join plays on performances.play_id = plays.id");
-
+        StringBuilder query = new StringBuilder(perfQuery);
+        query.replace(query.lastIndexOf("join"), query.length(), "join plays on play_id = plays.id");
         //select dates
-        query.append("performances.start_time >= ").
+        query.append(" where performances.start_time >= '").
                 append(context.getStart().toString()).
-                append(" AND performances.end_time <= ").
+                append("' AND performances.end_time <= '").
                 append(context.getEnd().toString()).
-                append(" ");
+                append("' ");
 
         //genres
         query.append("AND (0 OR ");
@@ -161,9 +187,9 @@ public class PerformanceController {
             isAny = true;
         }
         if (isAny)
-            query.append("1) ");
-        else
             query.append("0) ");
+        else
+            query.append("1) ");
 
         //authors
         if (context.getAuthIds().size() != 0){
@@ -205,11 +231,22 @@ public class PerformanceController {
             query.append("1) ");
 
         //only first performance in given range
+        if (context.isFirst()) {
+            StringBuilder subQuery = new StringBuilder(firstPerfQuery);
+            int ind = subQuery.indexOf("?");
+            subQuery.replace(ind, ind + 1, "'" + context.start + "'");
+            ind = subQuery.indexOf("?");
+            subQuery.replace(ind, ind + 1, "'" + context.end + "'");
+            System.out.println(subQuery);
+
+            query.append("AND (play_id, start_time) in (").append(subQuery.toString()).append(")");
+        }
+
         System.out.println(query.toString());
 
         String finalQuery = query.toString();
         new SwingWorker<ArrayList<Performance>, Void>() {
-            String query = finalQuery;
+            final String query = finalQuery;
             @Override
             protected ArrayList<Performance> doInBackground() throws Exception {
                 ArrayList<Performance> perfs = new ArrayList<>();
